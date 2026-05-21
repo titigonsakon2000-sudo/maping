@@ -30,14 +30,11 @@
 
         /* ================= NEON & ANIMATION EFFECT ================= */
 
-        /* 1. Glassmorphism + Scanlines Background */
         .glass-panel {
             background: rgba(9, 15, 30, 0.96);
             backdrop-filter: blur(20px);
             border-right: 2px solid #00ff99;
             box-shadow: 0 0 20px rgba(0, 255, 153, 0.15), 5px 0 25px rgba(0, 255, 153, 0.05);
-            position: relative;
-            z-index: 1001;
         }
         .glass-panel::before {
             content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -46,7 +43,6 @@
             z-index: -1; pointer-events: none;
         }
 
-        /* 2. Radar Spin Animations */
         .radar-ring {
             position: absolute; top: 50%; left: 50%; border-radius: 50%;
             transform: translate(-50%, -50%);
@@ -56,108 +52,57 @@
         .radar-3 { width: 96px; height: 96px; border: 2px dotted rgba(0, 255, 153, 0.3); animation: spin-ring-reverse 15s linear infinite; }
         .radar-4 { width: 64px; height: 64px; border: 1px dashed rgba(0, 255, 153, 0.4); animation: spin-ring 8s linear infinite; }
 
-        @keyframes spin-ring {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        @keyframes spin-ring-reverse {
-            0% { transform: translate(-50%, -50%) rotate(360deg); }
-            100% { transform: translate(-50%, -50%) rotate(0deg); }
-        }
-        @keyframes pulse-ring {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
-            50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.3; }
-        }
+        @keyframes spin-ring { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes spin-ring-reverse { 0% { transform: translate(-50%, -50%) rotate(360deg); } 100% { transform: translate(-50%, -50%) rotate(0deg); } }
+        @keyframes pulse-ring { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; } 50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.3; } }
 
-        /* 3. Floating Logo Box */
-        .logo-box {
-            animation: float-logo 4s ease-in-out infinite;
-        }
-        @keyframes float-logo {
-            0%, 100% { transform: translateY(0); filter: drop-shadow(0 0 10px rgba(0,255,153,0.6)); }
-            50% { transform: translateY(-8px); filter: drop-shadow(0 0 20px rgba(0,255,153,1)); }
-        }
+        .logo-box { animation: float-logo 4s ease-in-out infinite; }
+        @keyframes float-logo { 0%, 100% { transform: translateY(0); filter: drop-shadow(0 0 10px rgba(0,255,153,0.6)); } 50% { transform: translateY(-8px); filter: drop-shadow(0 0 20px rgba(0,255,153,1)); } }
 
-        /* 4. Queue Items Slide & Hover Lift */
         .queue-item-neon {
             background: rgba(30, 41, 59, 0.45);
             border: 1px solid rgba(0, 255, 153, 0.15);
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             animation: slide-in-right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
         }
-        .queue-item-neon:hover {
-            border-color: #00ff99;
-            box-shadow: -5px 0 15px rgba(0, 255, 153, 0.3);
-            background: rgba(30, 41, 59, 0.8);
-            transform: translateX(6px) scale(1.01) !important;
-        }
-        @keyframes slide-in-right {
-            0% { transform: translateX(-30px); opacity: 0; }
-            100% { transform: translateX(0); opacity: 1; }
-        }
+        .queue-item-neon:hover { border-color: #00ff99; box-shadow: -5px 0 15px rgba(0, 255, 153, 0.3); background: rgba(30, 41, 59, 0.8); transform: translateX(6px) scale(1.01) !important; }
+        @keyframes slide-in-right { 0% { transform: translateX(-30px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
 
-        /* 5. Stats Panel Hover 3D Float */
         #village-stats-panel {
-            background: rgba(7, 12, 24, 0.85) !important;
-            backdrop-filter: blur(15px) !important;
-            border: 1px solid #00f0ff !important;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.25), inset 0 0 10px rgba(0, 240, 255, 0.1) !important;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(7, 12, 24, 0.85) !important; backdrop-filter: blur(15px) !important; border: 1px solid #00f0ff !important;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.25), inset 0 0 10px rgba(0, 240, 255, 0.1) !important; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        #village-stats-panel:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.2) !important;
-        }
+        #village-stats-panel:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.2) !important; }
 
-        /* 6. Active Map Crosshair Breathing */
         .map-crosshair {
-            position: absolute; top: 50%; left: 50%;
-            width: 32px; height: 32px;
-            margin-left: -16px; margin-top: -16px;
-            z-index: 2000; pointer-events: none;
-            animation: crosshair-breathe 2s infinite ease-in-out;
+            position: absolute; top: 50%; left: 50%; width: 32px; height: 32px; margin-left: -16px; margin-top: -16px; z-index: 2000; pointer-events: none; animation: crosshair-breathe 2s infinite ease-in-out;
         }
-        .map-crosshair::before, .map-crosshair::after {
-            content: ''; position: absolute; background: #00ff99; box-shadow: 0 0 10px #00ff99;
-        }
+        .map-crosshair::before, .map-crosshair::after { content: ''; position: absolute; background: #00ff99; box-shadow: 0 0 10px #00ff99; }
         .map-crosshair::before { top: 15px; left: 0; width: 100%; height: 2px; }
         .map-crosshair::after { left: 15px; top: 0; width: 2px; height: 100%; }
-        
-        @keyframes crosshair-breathe {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.3); opacity: 1; }
-        }
+        @keyframes crosshair-breathe { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.3); opacity: 1; } }
 
-        /* Typography Glowing */
         .neon-text-green { color: #fff; text-shadow: 0 0 5px #00ff99, 0 0 12px rgba(0, 255, 153, 0.6); }
         .neon-text-amber { color: #fff; text-shadow: 0 0 5px #f59e0b, 0 0 12px rgba(245, 158, 11, 0.6); }
         .neon-text-cyan { text-shadow: 0 0 6px rgba(0, 240, 255, 0.6); }
 
-        /* Button Breathing Glow */
         .btn-neon-start {
-            background: rgba(0, 255, 153, 0.1); border: 2px solid #00ff99; color: #00ff99;
-            text-shadow: 0 0 4px rgba(0, 255, 153, 0.6);
-            animation: neon-pulse-emerald 2.5s infinite ease-in-out;
-            transition: all 0.3s;
+            background: rgba(0, 255, 153, 0.1); border: 2px solid #00ff99; color: #00ff99; text-shadow: 0 0 4px rgba(0, 255, 153, 0.6);
+            animation: neon-pulse-emerald 2.5s infinite ease-in-out; transition: all 0.3s;
         }
-        .btn-neon-start:hover {
-            background: #00ff99; color: #030712; box-shadow: 0 0 25px #00ff99; text-shadow: none; transform: scale(1.02);
-        }
+        .btn-neon-start:hover { background: #00ff99; color: #030712; box-shadow: 0 0 25px #00ff99; text-shadow: none; transform: scale(1.02); }
         @keyframes neon-pulse-emerald {
             0%, 100% { box-shadow: 0 0 10px rgba(0, 255, 153, 0.4), inset 0 0 5px rgba(0, 255, 153, 0.2); border-color: rgba(0, 255, 153, 0.6); }
             50% { box-shadow: 0 0 22px rgba(0, 255, 153, 0.85), inset 0 0 12px rgba(0, 255, 153, 0.4); border-color: rgba(0, 255, 153, 1); }
         }
 
-        /* Inputs */
         .neon-input:focus { border-color: #00ff99 !important; box-shadow: 0 0 12px rgba(0, 255, 153, 0.4) !important; transform: scale(1.01); }
 
-        /* Scrollbar */
         .custom-scroll::-webkit-scrollbar { width: 5px; }
         .custom-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
         .custom-scroll::-webkit-scrollbar-thumb { background: rgba(0, 255, 153, 0.3); border-radius: 10px; }
         .custom-scroll::-webkit-scrollbar-thumb:hover { background: #00ff99; box-shadow: 0 0 8px #00ff99; }
 
-        /* Resizer */
         #resizer { width: 4px; cursor: col-resize; background: #070b14; transition: background 0.3s; z-index: 1005; }
         #resizer:hover { background: #00ff99; box-shadow: 0 0 10px #00ff99; }
         body.resizing { cursor: col-resize; user-select: none; }
@@ -165,7 +110,6 @@
         .grid-collapsed { grid-template-rows: 0fr !important; margin-top: 0 !important; opacity: 0 !important; pointer-events: none; }
         .leaflet-routing-container { display: none !important; }
         
-        /* Map Labels */
         .house-number-label {
             background: rgba(5, 10, 20, 0.9) !important; backdrop-filter: blur(4px) !important;        
             border: 1.5px solid #00ff99 !important; border-radius: 6px !important; color: #ffffff !important;
@@ -178,28 +122,34 @@
         .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before { display: none !important; }
         .sortable-ghost { opacity: 0.3; background: #00ff99 !important; border-color: #00ff99 !important; transform: scale(0.95); }
 
-        .btn-map-type { transition: all 0.2s; border: 2px solid transparent; cursor: pointer; }
-.btn-map-type.active { border-color: #10b981; background: rgba(16, 185, 129, 0.2); }
+        body.hide-map-labels .toggleable-label-text { display: none !important; }
+
+        .leaflet-popup-content-wrapper {
+            background: #0f172a !important; color: #f8fafc !important; border: 1px solid rgba(0, 255, 153, 0.4) !important; border-radius: 12px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0,255,153,0.1) !important;
+        }
+        .leaflet-popup-tip { background: #0f172a !important; border: 1px solid rgba(0, 255, 153, 0.4) !important; }
+        .leaflet-popup-close-button { color: #94a3b8 !important; font-size: 18px !important; margin-top: 5px !important; margin-right: 5px !important; }
+        .leaflet-popup-close-button:hover { color: #fff !important; background: transparent !important; }
+
+        .leaflet-bar { border: none !important; box-shadow: 0 4px 10px rgba(0,0,0,0.6) !important; }
+        .leaflet-bar a { background-color: #1e293b !important; color: #cbd5e1 !important; border-bottom: 1px solid #334155 !important; }
+        .leaflet-bar a:hover { background-color: #334155 !important; color: #fff !important; }
+
+        /* คลาสพิเศษตอนเข้าโหมดส่งของ ให้ซ่อนเมนูทั้งหมด */
+        .delivery-hidden { display: none !important; }
     </style>
 </head>
-<body class="text-slate-200 h-screen w-full overflow-hidden flex">
+<body class="text-slate-200 h-screen w-full overflow-hidden flex relative">
 
-    <div class="px-3 mt-4">
-    <label class="block text-slate-400 text-[11px] mb-2 px-1">ประเภทแผนที่</label>
-    <div class="grid grid-cols-2 gap-2">
-        <button id="btn-street" onclick="changeMapLayer('street')" class="btn-map-type flex flex-col items-center p-2 bg-[#1e293b] rounded-lg border border-slate-600 hover:border-emerald-500/50">
-            <i class="fa-solid fa-map mb-1 text-blue-400"></i>
-            <span class="text-[11px] font-bold">ค่าเริ่มต้น</span>
-        </button>
-        <button id="btn-satellite" onclick="changeMapLayer('satellite')" class="btn-map-type flex flex-col items-center p-2 bg-[#1e293b] rounded-lg border border-slate-600 hover:border-emerald-500/50 active">
-            <i class="fa-solid fa-satellite mb-1 text-emerald-400"></i>
-            <span class="text-[11px] font-bold">ดาวเทียม</span>
-        </button>
-    </div>
-</div>
+    <div id="mobile-overlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[2000] hidden opacity-0 transition-opacity duration-300 md:hidden"></div>
 
-    <aside id="main-sidebar" class="glass-panel h-full flex flex-col shrink-0 z-[1001] transition-all" style="width: 360px; min-width: 280px;">
+    <aside id="main-sidebar" class="glass-panel fixed md:relative inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 flex flex-col shrink-0 z-[2001] md:z-[1001] w-[85%] sm:w-[320px] md:w-[360px] md:min-w-[280px]">
         
+        <button onclick="toggleMobileMenu()" class="md:hidden absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-slate-400 hover:text-white bg-slate-800/80 rounded-full border border-slate-600 z-[100]">
+            <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+
         <div class="relative p-6 flex flex-col items-center justify-center border-b border-emerald-500/20 bg-[#070b16]/60 overflow-hidden">
             <div class="radar-ring radar-1"></div>
             <div class="radar-ring radar-2"></div>
@@ -282,14 +232,25 @@
         </div>
     </aside>
 
-    <div id="resizer"></div>
+    <div id="resizer" class="hidden md:block"></div>
 
     <main class="flex-1 relative bg-[#0b0f19] h-full w-full">
         <div id="map" class="h-full w-full z-[1]"></div>
         <div class="map-crosshair"></div>
 
+        <button id="btn-mobile-menu" onclick="toggleMobileMenu()" class="md:hidden absolute top-4 left-4 z-[1000] w-11 h-11 bg-[#0b0f19]/90 backdrop-blur-md border border-[#00ff99]/50 rounded-xl shadow-[0_0_15px_rgba(0,255,153,0.3)] text-[#00ff99] flex items-center justify-center text-lg">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div id="layer-toggle-btn" onclick="toggleMapLayer()" class="absolute bottom-6 left-4 md:left-6 z-[1000] w-[56px] h-[56px] md:w-[64px] md:h-[64px] rounded-[14px] border-[2px] border-white shadow-[0_4px_12px_rgba(0,0,0,0.5)] cursor-pointer overflow-hidden group bg-slate-200 transition-transform active:scale-95 hover:shadow-emerald-500/50">
+            <img id="layer-thumb-img" src="https://mt1.google.com/vt/lyrs=m&x=3&y=1&z=3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 via-black/40 to-transparent pb-1 pt-3 md:pt-4 flex items-center justify-center gap-1">
+                <i class="fa-solid fa-layer-group text-[9px] md:text-[10px] text-white"></i>
+                <span class="text-[9px] md:text-[10px] text-white font-bold tracking-wide">เลเยอร์</span>
+            </div>
+        </div>
+
         <div id="village-stats-panel" class="hidden lg:block absolute top-4 right-4 w-[280px] rounded-xl p-3 z-[1000] transition-all duration-500">
-            
             <div onclick="toggleVillageStats()" class="flex justify-between items-center cursor-pointer select-none mb-1 group">
                 <h2 class="text-[#00f0ff] font-bold text-[14px] flex items-center gap-2 tracking-wide neon-text-cyan group-hover:scale-105 transition-transform origin-left">
                     <i class="fa-solid fa-chart-pie"></i> ข้อมูลจำนวนบ้านแยกหมู่
@@ -306,12 +267,54 @@
             </div>
         </div>
 
-        <button id="exit-full-mode" onclick="exitDeliveryMode()" class="hidden absolute bottom-6 left-1/2 -translate-x-1/2 z-[1001] bg-red-950/90 border-2 border-red-500 hover:bg-red-600 hover:text-white text-red-400 px-8 py-3 rounded-full shadow-[0_0_20px_rgba(239,68,68,0.5)] items-center gap-2 font-bold tracking-wide text-sm transition-all active:scale-95 hover:-translate-y-1 backdrop-blur-md cursor-pointer">
+        <button id="exit-full-mode" onclick="exitDeliveryMode()" class="hidden absolute bottom-6 left-1/2 -translate-x-1/2 z-[1001] w-[80%] max-w-[250px] md:w-auto bg-red-950/90 border-2 border-red-500 hover:bg-red-600 hover:text-white text-red-400 px-6 md:px-8 py-3 rounded-full shadow-[0_0_20px_rgba(239,68,68,0.5)] items-center justify-center gap-2 font-bold tracking-wide text-[13px] md:text-sm transition-all active:scale-95 hover:-translate-y-1 backdrop-blur-md cursor-pointer text-nowrap">
             <i class="fa-solid fa-xmark"></i> ออกจากโหมดเต็มจอ
         </button>
     </main>
 
     <script>
+        // --- ฟังก์ชันควบคุมเมนูบนมือถือ (Hamburger) ---
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('main-sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.replace('opacity-0', 'opacity-100'), 10);
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.replace('opacity-100', 'opacity-0');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+
+        // --- ฟังก์ชันเปิด Google Maps ---
+        function openGoogleMaps(lat, lng) {
+            const url = `https://www.google.com/maps?q=${lat},${lng}`;
+            window.open(url, '_blank');
+        }
+
+        // --- ระบบ ซ่อน/แสดง ชื่อบ้าน ---
+        let isLabelsHidden = false;
+        function toggleMapLabels() {
+            isLabelsHidden = !isLabelsHidden;
+            const btn = document.getElementById('btn-toggle-labels');
+            if (isLabelsHidden) {
+                document.body.classList.add('hide-map-labels');
+                if(btn) {
+                    btn.innerHTML = '<i class="fa-solid fa-eye-slash text-[14px]"></i>';
+                    btn.classList.replace('text-emerald-400', 'text-slate-400');
+                }
+            } else {
+                document.body.classList.remove('hide-map-labels');
+                if(btn) {
+                    btn.innerHTML = '<i class="fa-solid fa-eye text-[14px]"></i>';
+                    btn.classList.replace('text-slate-400', 'text-emerald-400');
+                }
+            }
+        }
+
         // --- ระบบควบคุมขนาดความกว้างเมนูด้านซ้าย (Resizer) ---
         const resizer = document.getElementById('resizer');
         const sidebar = document.getElementById('main-sidebar');
@@ -321,64 +324,6 @@
             document.addEventListener('mousemove', resize);
             document.addEventListener('mouseup', stopResize);
         });
-        
-    // ... (ส่วนบนเหมือนเดิม)
-
-    // --- เพิ่มฟังก์ชันนี้เข้าไป ---
-    function fitMapToBounds() {
-        if (allHouses.length > 0) {
-            const bounds = L.latLngBounds(allHouses.map(h => [h.lat, h.lng]));
-            // ขยายเข้าโดยเว้นขอบนิดหน่อยเพื่อความสวยงาม
-            map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
-        }
-    }
-
-    // --- แก้ไขฟังก์ชัน loadKMLFile ให้เรียกใช้การ Zoom อัตโนมัติ ---
-    function loadKMLFile() {
-        fetch('houses.kml?t=' + new Date().getTime())
-            .then(res => res.text())
-            .then(str => {
-                const kml = new DOMParser().parseFromString(str, "text/xml");
-                const placemarks = kml.getElementsByTagName("Placemark");
-                allHouses = []; 
-                
-                for (let p of placemarks) {
-                    const name = p.getElementsByTagName("name")[0]?.textContent || "Unknown";
-                    const coords = p.getElementsByTagName("coordinates")[0]?.textContent.trim().split(",");
-                    
-                    if (coords) {
-                        const lat = parseFloat(coords[1]);
-                        const lng = parseFloat(coords[0]);
-                        
-                        // กรองเฉพาะพิกัดที่ใกล้เคียง ไม่ให้หลุดไปที่อื่น
-                        if (lat >= 14 && lat <= 15 && lng >= 101 && lng <= 102) {
-                            let village = "ม.ทั่วไป";
-                            const match = name.match(/ม\.\d+/i);
-                            if (match) village = match[0].toLowerCase();
-                            allHouses.push({ id: name, lat: lat, lng: lng, village: village });
-                        }
-                    }
-                }
-                
-                plotMarkers();
-                updateVillageStats();
-                
-                // --- เพิ่มบรรทัดนี้: เมื่อโหลดเสร็จให้ซูมเข้าหาหมุดทันที ---
-                fitMapToBounds();
-                
-                const statusEl = document.getElementById("file-status");
-                statusEl.className = "mx-3 mt-3 p-2 rounded text-[13px] font-bold text-center bg-[#042f22]/70 text-emerald-400 border border-emerald-400 flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(0,255,153,0.3)] transition-all";
-                statusEl.innerHTML = `<i class="fa-solid fa-square-check"></i> โหลดพิกัดนำจ่ายสำเร็จ ${allHouses.length} หลัง`;
-            })
-            .catch(err => {
-                console.error("Error loading KML:", err);
-                const statusEl = document.getElementById("file-status");
-                statusEl.className = "mx-3 mt-3 p-2 rounded text-[13px] font-bold text-center bg-red-950/80 text-red-400 border border-red-500 flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all";
-                statusEl.innerHTML = `❌ เกิดข้อผิดพลาดในการโหลดไฟล์ KML`;
-            });
-    }
-
-    // ... (ส่วนที่เหลือของ script ให้คงไว้เหมือนเดิมครับ)
 
         function resize(e) {
             let newWidth = e.clientX;
@@ -393,17 +338,56 @@
             document.removeEventListener('mouseup', stopResize);
         }
 
-        // --- ตั้งค่าระบบแผนที่สไตล์ใหม่ (High-Contrast Satellite Layer) ---
+        // --- ตั้งค่าระบบแผนที่ ---
         const map = L.map('map', { zoomControl: false }).setView([14.41, 101.70], 13);
-        // ประกาศเลเยอร์ทั้ง 2 แบบ
-const streetLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { maxZoom: 20 });
-const satelliteLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxZoom: 20 });
-
-// ตั้งค่าเริ่มต้น
-satelliteLayer.addTo(map);
-        L.control.zoom({ position: 'bottomright' }).addTo(map);
         
-        L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxZoom: 20 }).addTo(map);
+        const streetLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { maxZoom: 20 });
+        const satelliteLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', { maxZoom: 20 });
+
+        satelliteLayer.addTo(map);
+        let currentLayerType = 'satellite'; 
+        
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+        // ================= เพิ่มแผงควบคุม (ตา + พิกัดฉัน + สตรีทวิว) =================
+        const CustomMapControls = L.Control.extend({
+            options: { position: 'bottomright' },
+            onAdd: function (map) {
+                const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control flex flex-col gap-0.5 mb-2');
+                container.style.border = 'none'; container.style.boxShadow = 'none'; container.style.backgroundColor = 'transparent';
+                container.innerHTML = `
+                    <div class="bg-[#1e293b] border border-slate-600 rounded-md overflow-hidden shadow-lg flex flex-col">
+                        <a href="#" onclick="toggleMapLabels(); return false;" id="btn-toggle-labels" title="ซ่อน/แสดง ป้ายชื่อสถานที่บนแผนที่" class="w-8 h-8 flex items-center justify-center text-emerald-400 hover:text-white hover:bg-slate-700 transition-colors border-b border-slate-600">
+                            <i class="fa-solid fa-eye text-[14px]"></i>
+                        </a>
+                        <a href="#" onclick="map.locate({setView: true, maxZoom: 16}); return false;" title="ตำแหน่งของฉัน" class="w-8 h-8 flex items-center justify-center text-blue-400 hover:text-white hover:bg-slate-700 transition-colors border-b border-slate-600">
+                            <i class="fa-solid fa-crosshairs text-[15px]"></i>
+                        </a>
+                        <a href="#" onclick="openGoogleMaps(map.getCenter().lat, map.getCenter().lng); return false;" title="ดูสตรีทวิวตรงเป้าเล็ง" class="w-8 h-8 flex items-center justify-center text-amber-500 hover:text-white hover:bg-slate-700 transition-colors">
+                            <i class="fa-solid fa-street-view text-[16px]"></i>
+                        </a>
+                    </div>
+                `;
+                return container;
+            }
+        });
+        map.addControl(new CustomMapControls());
+
+        function toggleMapLayer() {
+            const thumbImg = document.getElementById('layer-thumb-img');
+            
+            if (currentLayerType === 'satellite') {
+                map.removeLayer(satelliteLayer);
+                streetLayer.addTo(map);
+                currentLayerType = 'street';
+                thumbImg.src = "https://mt1.google.com/vt/lyrs=s&x=3&y=1&z=3";
+            } else {
+                map.removeLayer(streetLayer);
+                satelliteLayer.addTo(map);
+                currentLayerType = 'satellite';
+                thumbImg.src = "https://mt1.google.com/vt/lyrs=m&x=3&y=1&z=3";
+            }
+        }
 
         let allHouses = []; 
         let markersLayer = L.markerClusterGroup(); 
@@ -425,22 +409,14 @@ satelliteLayer.addTo(map);
             "ม.5": 5, "ม.21": 6, "ม.2": 7, "ม.19": 8,
             "ม.1": 9, "ม.7": 10, "ม.8": 11
         };
-        
-        function changeMapLayer(type) {
-    if (type === 'street') {
-        map.removeLayer(satelliteLayer);
-        map.addLayer(streetLayer);
-        document.getElementById('btn-street').classList.add('active');
-        document.getElementById('btn-satellite').classList.remove('active');
-    } else {
-        map.removeLayer(streetLayer);
-        map.addLayer(satelliteLayer);
-        document.getElementById('btn-satellite').classList.add('active');
-        document.getElementById('btn-street').classList.remove('active');
-    }
-}
 
-        // --- ดึงข้อมูลพิกัดบ้านจากไฟล์ KML เดิม ---
+        function fitMapToBounds() {
+            if (allHouses.length > 0) {
+                const bounds = L.latLngBounds(allHouses.map(h => [h.lat, h.lng]));
+                map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
+            }
+        }
+
         function loadKMLFile() {
             fetch('houses.kml?t=' + new Date().getTime())
                 .then(res => res.text())
@@ -461,28 +437,26 @@ satelliteLayer.addTo(map);
                                 let village = "ม.ทั่วไป";
                                 const match = name.match(/ม\.\d+/i);
                                 if (match) village = match[0].toLowerCase();
-                                
                                 allHouses.push({ id: name, lat: lat, lng: lng, village: village });
                             }
                         }
                     }
                     
                     plotMarkers();
-                    updateVillageStats(); 
+                    updateVillageStats();
+                    fitMapToBounds();
                     
                     const statusEl = document.getElementById("file-status");
                     statusEl.className = "mx-3 mt-3 p-2 rounded text-[13px] font-bold text-center bg-[#042f22]/70 text-emerald-400 border border-emerald-400 flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(0,255,153,0.3)] transition-all";
                     statusEl.innerHTML = `<i class="fa-solid fa-square-check"></i> โหลดพิกัดนำจ่ายสำเร็จ ${allHouses.length} หลัง`;
                 })
                 .catch(err => {
-                    console.error("Error loading KML:", err);
                     const statusEl = document.getElementById("file-status");
                     statusEl.className = "mx-3 mt-3 p-2 rounded text-[13px] font-bold text-center bg-red-950/80 text-red-400 border border-red-500 flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all";
                     statusEl.innerHTML = `❌ เกิดข้อผิดพลาดในการโหลดไฟล์ KML`;
                 });
         }
 
-        // --- จัดหมุดแสดงผลพิกัดลงแผงแผ่นที่ ---
         function plotMarkers(houses = null, isLabelMode = false) {
             markersLayer.clearLayers();
             villageLabelLayer.clearLayers();
@@ -495,7 +469,7 @@ satelliteLayer.addTo(map);
                     const vColor = villageColors[h.village] || "#6b7280";
                     const htmlContent = `
                         <div style="display: flex; flex-direction: column; align-items: center; transition: transform 0.3s;" class="hover:scale-110">
-                            <div style="background: #0b0f19; border: 2px solid ${vColor}; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 800; color: #fff; box-shadow: 0 0 10px ${vColor}; white-space: nowrap;">${h.id}</div>
+                            <div class="toggleable-label-text" style="background: #0b0f19; border: 2px solid ${vColor}; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 800; color: #fff; box-shadow: 0 0 10px ${vColor}; white-space: nowrap;">${h.id}</div>
                             <div style="width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 8px solid ${vColor};"></div>
                         </div>`;
                     const icon = L.divIcon({ html: htmlContent, className: '', iconSize: [40, 30], iconAnchor: [20, 30] });
@@ -508,10 +482,18 @@ satelliteLayer.addTo(map);
                 map.addLayer(markersLayer);
                 data.forEach(h => {
                     const marker = L.marker([h.lat, h.lng]).bindPopup(`
-                        <div class="text-center p-1">
+                        <div class="text-center p-1 min-w-[120px]">
                             <b class="text-sm block mb-1 text-slate-800">${h.id}</b>
                             <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">${h.village}</span><br>
-                            <button onclick="addToQueue('${h.id}')" class="mt-2.5 bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1 rounded text-xs font-bold transition-colors cursor-pointer hover:scale-105 transform">เพิ่มลงคิวส่ง</button>
+                            
+                            <div class="flex gap-1 justify-center mt-3">
+                                <button onclick="openGoogleMaps(${h.lat}, ${h.lng})" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-2 py-1.5 rounded text-[10px] font-bold transition-colors cursor-pointer hover:scale-105 transform shadow-md" title="ดูใน Google Maps">
+                                    <i class="fa-solid fa-map-location-dot"></i> ดูแมพ
+                                </button>
+                                <button onclick="addToQueue('${h.id}')" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white px-2 py-1.5 rounded text-[10px] font-bold transition-colors cursor-pointer hover:scale-105 transform shadow-md">
+                                    <i class="fa-solid fa-plus"></i> เพิ่มคิว
+                                </button>
+                            </div>
                         </div>
                     `);
                     markersLayer.addLayer(marker);
@@ -519,7 +501,6 @@ satelliteLayer.addTo(map);
             }
         }
 
-        // --- ควบคุมฟังก์ชันจัดการลำดับจัดส่งพัสดุ ---
         function addToQueue(houseId) {
             const house = allHouses.find(h => h.id === houseId);
             if (!house || deliveryQueue.some(q => q.id === houseId)) {
@@ -593,14 +574,20 @@ satelliteLayer.addTo(map);
                             <span class="bg-amber-500 text-gray-900 text-[12px] w-5 h-5 rounded-full flex items-center justify-center font-black shadow-[0_0_8px_#f59e0b] group-hover:scale-110 transition-transform">${i+1}</span>
                             <div class="text-white text-[14px] font-bold tracking-wide">${h.id}</div>
                         </div>
-                        <button class="delete-btn text-slate-500 hover:text-red-400 hover:scale-125 px-2 transition-all" data-id="${h.id}"><i class="fa-solid fa-xmark"></i></button>
+                        <div class="flex items-center gap-1">
+                            <button onclick="openGoogleMaps(${h.lat}, ${h.lng})" class="text-blue-400 hover:text-blue-300 hover:scale-125 px-2 transition-all" title="ดูตำแหน่งใน Google Maps">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                            </button>
+                            <button class="delete-btn text-slate-500 hover:text-red-400 hover:scale-125 px-2 transition-all" data-id="${h.id}">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
                     `;
                     ul.appendChild(li);
                 });
                 document.querySelectorAll('#queue-list .delete-btn').forEach(btn => {
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        // ลบแอนิเมชันตอนออก
                         const li = this.closest('li');
                         li.style.transform = "translateX(50px)";
                         li.style.opacity = "0";
@@ -612,7 +599,6 @@ satelliteLayer.addTo(map);
             drawPath(); 
         }
 
-        // เปิดใช้งานระบบลากวางสลับคิวจัดส่งอิสระด้วย SortableJS
         Sortable.create(document.getElementById('queue-list'), {
             animation: 200,
             ghostClass: 'sortable-ghost',
@@ -661,7 +647,6 @@ satelliteLayer.addTo(map);
             });
         }
 
-        // --- ระบบประมวลผลเส้นทางจัดส่งพัสดุผ่าน OSRM (ทำสีเส้นทางแบบเรืองแสงนีออน) ---
         function drawPath() {
             if (window.routingControl) {
                 map.removeControl(window.routingControl);
@@ -683,7 +668,6 @@ satelliteLayer.addTo(map);
             }
         }
 
-        // --- ฟังก์ชันค้นหาและกรองแยกหมู่บ้าน ---
         function filterByVillage() {
             const selectedVillage = document.getElementById("village-filter").value;
             const quickResults = document.getElementById("quick-results-columns");
@@ -699,7 +683,10 @@ satelliteLayer.addTo(map);
                 html += filtered.map(h => `
                     <div class="flex justify-between items-center bg-slate-900/60 p-2 rounded border border-slate-800 mb-1 hover:border-emerald-500/50 hover:bg-slate-800 transition-all hover:translate-x-1">
                         <span class="font-bold text-[12px] text-white">${h.id}</span>
-                        <button onclick="addToQueue('${h.id}')" class="bg-emerald-600 px-3 py-1 rounded text-[10px] font-bold text-white hover:bg-emerald-500 cursor-pointer transition-transform hover:scale-105 active:scale-95">เพิ่ม</button>
+                        <div class="flex gap-1">
+                            <button onclick="openGoogleMaps(${h.lat}, ${h.lng})" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-2 py-1 rounded text-[10px] cursor-pointer transition-transform hover:scale-105 active:scale-95" title="ดูใน Google Maps"><i class="fa-solid fa-map-location-dot"></i></button>
+                            <button onclick="addToQueue('${h.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1 rounded text-[10px] cursor-pointer transition-transform hover:scale-105 active:scale-95">เพิ่ม</button>
+                        </div>
                     </div>
                 `).join('');
                 quickResults.innerHTML = html;
@@ -734,7 +721,8 @@ satelliteLayer.addTo(map);
                     <div class="flex justify-between items-center bg-slate-900/60 p-2 rounded border border-slate-800 mb-1 hover:border-blue-500/50 hover:bg-slate-800 transition-all hover:translate-x-1">
                         <span class="font-bold text-[12px] text-white">${h.id}</span>
                         <div class="flex gap-1">
-                            <button onclick="map.setView([${h.lat}, ${h.lng}], 19)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-2 py-1 rounded text-[10px] cursor-pointer transition-transform hover:scale-105 active:scale-95">เล็ง</button>
+                            <button onclick="openGoogleMaps(${h.lat}, ${h.lng})" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-2 py-1 rounded text-[10px] cursor-pointer transition-transform hover:scale-105 active:scale-95" title="ดูใน Google Maps"><i class="fa-solid fa-map-location-dot"></i></button>
+                            <button onclick="map.setView([${h.lat}, ${h.lng}], 19)" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-2 py-1 rounded text-[10px] cursor-pointer transition-transform hover:scale-105 active:scale-95">เล็ง</button>
                             <button onclick="addToQueue('${h.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-2 py-1 rounded text-[10px] cursor-pointer transition-transform hover:scale-105 active:scale-95">เพิ่ม</button>
                         </div>
                     </div>
@@ -743,7 +731,6 @@ satelliteLayer.addTo(map);
             quickResults.innerHTML = html || '<div class="text-center py-4 text-slate-500">ไม่พบข้อมูลพิกัดบ้าน</div>';
         }
 
-        // --- ฟังก์ชันอัปเดตสถิติจำนวนบ้านฝั่งขวาแผงแผนที่ ---
         function updateVillageStats() {
             const villages = [
                 { name: ".10 บุเจ้าคุณ", code: "ม.10" }, { name: ".16 คลองปลากั้ง", code: "ม.16" },
@@ -780,7 +767,6 @@ satelliteLayer.addTo(map);
             statsContainer.appendChild(resetBtn);
         }
 
-        // อนิมชันพับ/กาง แผงข้อมูล
         function toggleVillageStats() {
             const wrapper = document.getElementById('stats-grid-wrapper');
             const icon = document.getElementById('toggle-icon');
@@ -794,7 +780,6 @@ satelliteLayer.addTo(map);
             }
         }
 
-        // --- ตัวสลับคุมการทำงานของโหมดนำทางนำจ่ายเต็มหน้าจอ ---
         function validateAndStartDelivery() {
             if (!deliveryQueue || deliveryQueue.length === 0) {
                 Swal.fire({ 
@@ -811,30 +796,38 @@ satelliteLayer.addTo(map);
         }
 
         function startDeliveryMode() {
-            ['main-sidebar', 'resizer', 'village-stats-panel'].forEach(id => {
+            // ปิดเมนูมือถือ ถ้าเปิดอยู่
+            const sidebar = document.getElementById('main-sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            if (sidebar && window.innerWidth < 768) {
+                sidebar.classList.add('-translate-x-full');
+                if (overlay) overlay.classList.add('hidden');
+            }
+
+            // ซ่อนองค์ประกอบต่างๆ
+            ['main-sidebar', 'resizer', 'village-stats-panel', 'btn-mobile-menu'].forEach(id => {
                 const el = document.getElementById(id);
-                if (el) el.style.setProperty('display', 'none', 'important');
+                if (el) el.classList.add('delivery-hidden');
             });
+            
             const exitBtn = document.getElementById('exit-full-mode');
             if (exitBtn) exitBtn.style.setProperty('display', 'flex', 'important');
             setTimeout(() => { if(map) map.invalidateSize(); }, 300);
         }
 
         function exitDeliveryMode() {
-            const sidebar = document.getElementById('main-sidebar');
-            const resizer = document.getElementById('resizer');
-            const statsPanel = document.getElementById('village-stats-panel');
+            // แสดงองค์ประกอบกลับมา
+            ['main-sidebar', 'resizer', 'village-stats-panel', 'btn-mobile-menu'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('delivery-hidden');
+            });
+            
             const exitBtn = document.getElementById('exit-full-mode');
-
-            if (sidebar) sidebar.style.setProperty('display', 'flex', 'important');
-            if (resizer) resizer.style.setProperty('display', 'block', 'important');
-            if (statsPanel) statsPanel.style.setProperty('display', 'block', 'important');
             if (exitBtn) exitBtn.style.setProperty('display', 'none', 'important');
 
             setTimeout(() => { if(map) map.invalidateSize(); }, 300);
         }
 
-        // เรียกใช้งานดึงไฟล์พิกัด KML เพื่อเริ่มต้นโปรแกรม
         loadKMLFile();
     </script>
 </body>
