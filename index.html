@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DELIVERY MAKER PRO - BY TITIGORN</title>
     
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -29,12 +29,13 @@
         }
 
         /* ================= NEON & ANIMATION EFFECT ================= */
-
         .glass-panel {
             background: rgba(9, 15, 30, 0.96);
             backdrop-filter: blur(20px);
             border-right: 2px solid #00ff99;
             box-shadow: 0 0 20px rgba(0, 255, 153, 0.15), 5px 0 25px rgba(0, 255, 153, 0.05);
+            position: relative;
+            z-index: 1001;
         }
         .glass-panel::before {
             content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -65,7 +66,9 @@
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             animation: slide-in-right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
         }
-        .queue-item-neon:hover { border-color: #00ff99; box-shadow: -5px 0 15px rgba(0, 255, 153, 0.3); background: rgba(30, 41, 59, 0.8); transform: translateX(6px) scale(1.01) !important; }
+        .queue-item-neon:hover {
+            border-color: #00ff99; box-shadow: -5px 0 15px rgba(0, 255, 153, 0.3); background: rgba(30, 41, 59, 0.8); transform: translateX(6px) scale(1.01) !important;
+        }
         @keyframes slide-in-right { 0% { transform: translateX(-30px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
 
         #village-stats-panel {
@@ -122,31 +125,48 @@
         .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before { display: none !important; }
         .sortable-ghost { opacity: 0.3; background: #00ff99 !important; border-color: #00ff99 !important; transform: scale(0.95); }
 
+        /* ================= คลาสสำหรับ ซ่อนชื่อบ้าน ================= */
         body.hide-map-labels .toggleable-label-text { display: none !important; }
 
-        .leaflet-popup-content-wrapper {
-            background: #0f172a !important; color: #f8fafc !important; border: 1px solid rgba(0, 255, 153, 0.4) !important; border-radius: 12px !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0,255,153,0.1) !important;
-        }
-        .leaflet-popup-tip { background: #0f172a !important; border: 1px solid rgba(0, 255, 153, 0.4) !important; }
-        .leaflet-popup-close-button { color: #94a3b8 !important; font-size: 18px !important; margin-top: 5px !important; margin-right: 5px !important; }
-        .leaflet-popup-close-button:hover { color: #fff !important; background: transparent !important; }
-
+        /* Custom Leaflet Controls */
         .leaflet-bar { border: none !important; box-shadow: 0 4px 10px rgba(0,0,0,0.6) !important; }
         .leaflet-bar a { background-color: #1e293b !important; color: #cbd5e1 !important; border-bottom: 1px solid #334155 !important; }
         .leaflet-bar a:hover { background-color: #334155 !important; color: #fff !important; }
 
-        /* คลาสพิเศษตอนเข้าโหมดส่งของ ให้ซ่อนเมนูทั้งหมด */
+        /* ================= MOBILE RESPONSIVE ================= */
         .delivery-hidden { display: none !important; }
+
+        #mobile-overlay {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7); z-index: 2000; opacity: 0; transition: opacity 0.3s ease;
+        }
+        #mobile-overlay.active { display: block; opacity: 1; }
+        
+        .leaflet-control-zoom { margin-bottom: 20px !important; }
+
+        /* ================= GPS Tracking Pulsing Dot ================= */
+        .gps-user-dot {
+            background-color: #3b82f6;
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
+            animation: pulse-gps 1.5s infinite ease-out;
+        }
+        @keyframes pulse-gps {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+
     </style>
 </head>
 <body class="text-slate-200 h-screen w-full overflow-hidden flex relative">
 
-    <div id="mobile-overlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[2000] hidden opacity-0 transition-opacity duration-300 md:hidden"></div>
+    <div id="mobile-overlay" onclick="toggleMobileMenu()" class="md:hidden"></div>
 
-    <aside id="main-sidebar" class="glass-panel fixed md:relative inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 flex flex-col shrink-0 z-[2001] md:z-[1001] w-[85%] sm:w-[320px] md:w-[360px] md:min-w-[280px]">
+    <aside id="main-sidebar" class="glass-panel fixed md:relative h-full flex flex-col shrink-0 z-[2001] md:z-[1001] transition-transform duration-300 transform -translate-x-full md:translate-x-0 w-[85%] sm:w-[320px] md:w-[360px] md:min-w-[280px]">
         
-        <button onclick="toggleMobileMenu()" class="md:hidden absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-slate-400 hover:text-white bg-slate-800/80 rounded-full border border-slate-600 z-[100]">
+        <button onclick="toggleMobileMenu()" class="md:hidden absolute top-4 right-4 text-slate-400 hover:text-white z-50 bg-slate-800/80 w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center">
             <i class="fa-solid fa-xmark text-lg"></i>
         </button>
 
@@ -280,12 +300,10 @@
             
             if (sidebar.classList.contains('-translate-x-full')) {
                 sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-                setTimeout(() => overlay.classList.replace('opacity-0', 'opacity-100'), 10);
+                overlay.classList.add('active');
             } else {
                 sidebar.classList.add('-translate-x-full');
-                overlay.classList.replace('opacity-100', 'opacity-0');
-                setTimeout(() => overlay.classList.add('hidden'), 300);
+                overlay.classList.remove('active');
             }
         }
 
@@ -293,26 +311,6 @@
         function openGoogleMaps(lat, lng) {
             const url = `https://www.google.com/maps?q=${lat},${lng}`;
             window.open(url, '_blank');
-        }
-
-        // --- ระบบ ซ่อน/แสดง ชื่อบ้าน ---
-        let isLabelsHidden = false;
-        function toggleMapLabels() {
-            isLabelsHidden = !isLabelsHidden;
-            const btn = document.getElementById('btn-toggle-labels');
-            if (isLabelsHidden) {
-                document.body.classList.add('hide-map-labels');
-                if(btn) {
-                    btn.innerHTML = '<i class="fa-solid fa-eye-slash text-[14px]"></i>';
-                    btn.classList.replace('text-emerald-400', 'text-slate-400');
-                }
-            } else {
-                document.body.classList.remove('hide-map-labels');
-                if(btn) {
-                    btn.innerHTML = '<i class="fa-solid fa-eye text-[14px]"></i>';
-                    btn.classList.replace('text-slate-400', 'text-emerald-400');
-                }
-            }
         }
 
         // --- ระบบควบคุมขนาดความกว้างเมนูด้านซ้าย (Resizer) ---
@@ -349,18 +347,118 @@
         
         L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-        // ================= เพิ่มแผงควบคุม (ตา + พิกัดฉัน + สตรีทวิว) =================
+        // ================= ระบบ ซ่อน/แสดง ชื่อสถานที่บนแผนที่ =================
+        let isBaseLabelsHidden = false;
+        
+        window.toggleMapLabels = function() {
+            isBaseLabelsHidden = !isBaseLabelsHidden;
+            const btn = document.getElementById('btn-toggle-labels');
+            
+            if (isBaseLabelsHidden) {
+                // เปลี่ยนเป็นดาวเทียมล้วน ไม่มีชื่อสถานที่
+                satelliteLayer.setUrl('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}');
+                if(btn) {
+                    btn.innerHTML = '<i class="fa-solid fa-eye-slash text-[14px]"></i>';
+                    btn.classList.replace('text-emerald-400', 'text-slate-400');
+                }
+            } else {
+                // เปลี่ยนเป็นดาวเทียมแบบมีชื่อสถานที่ (s,h)
+                satelliteLayer.setUrl('https://mt1.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}');
+                if(btn) {
+                    btn.innerHTML = '<i class="fa-solid fa-eye text-[14px]"></i>';
+                    btn.classList.replace('text-slate-400', 'text-emerald-400');
+                }
+            }
+        };
+
+        // ================= ระบบ GPS ติดตามตำแหน่ง (Live Tracking) =================
+        let watchId = null;
+        let gpsMarker = null;
+        let gpsCircle = null;
+        let isTracking = false;
+
+        window.toggleGPSTracking = function() {
+            const btn = document.getElementById('btn-track-location');
+            
+            if (isTracking) {
+                // หยุดติดตาม
+                navigator.geolocation.clearWatch(watchId);
+                if (gpsMarker) map.removeLayer(gpsMarker);
+                if (gpsCircle) map.removeLayer(gpsCircle);
+                isTracking = false;
+                
+                if(btn) {
+                    btn.classList.replace('text-emerald-400', 'text-blue-400');
+                    btn.classList.remove('bg-slate-700');
+                }
+            } else {
+                // เริ่มติดตาม
+                if (navigator.geolocation) {
+                    if(btn) {
+                        btn.classList.replace('text-blue-400', 'text-emerald-400');
+                        btn.classList.add('bg-slate-700');
+                    }
+                    
+                    watchId = navigator.geolocation.watchPosition(
+                        (position) => {
+                            const lat = position.coords.latitude;
+                            const lng = position.coords.longitude;
+                            const accuracy = position.coords.accuracy;
+
+                            if (!gpsMarker) {
+                                // สร้างหมุดครั้งแรก
+                                const icon = L.divIcon({
+                                    className: 'gps-user-dot',
+                                    iconSize: [16, 16],
+                                    iconAnchor: [8, 8],
+                                    html: ''
+                                });
+                                gpsMarker = L.marker([lat, lng], {icon: icon, zIndexOffset: 1000}).addTo(map);
+                                gpsCircle = L.circle([lat, lng], {radius: accuracy, color: '#3b82f6', fillColor: '#3b82f6', fillOpacity: 0.15, weight: 1}).addTo(map);
+                                
+                                // เลื่อนกล้องไปหาผู้ใช้เฉพาะครั้งแรกที่กด
+                                map.setView([lat, lng], 17);
+                            } else {
+                                // อัปเดตตำแหน่งเมื่อเคลื่อนที่
+                                gpsMarker.setLatLng([lat, lng]);
+                                gpsCircle.setLatLng([lat, lng]);
+                                gpsCircle.setRadius(accuracy);
+                            }
+                        },
+                        (error) => {
+                            console.error("GPS Error:", error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'ข้อผิดพลาด GPS',
+                                text: 'ไม่สามารถเข้าถึงตำแหน่งของคุณได้ กรุณาเปิด GPS ในมือถือและอนุญาตการเข้าถึงตำแหน่งในเบราว์เซอร์ครับ',
+                                background: '#0f172a', color: '#fff'
+                            });
+                            window.toggleGPSTracking(); // ปิดระบบถ้าเกิด Error
+                        },
+                        { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
+                    );
+                    isTracking = true;
+                } else {
+                    Swal.fire('ไม่รองรับ', 'เบราว์เซอร์ของคุณไม่รองรับการระบุตำแหน่ง', 'warning');
+                }
+            }
+        };
+
+        // ================= เพิ่มปุ่มควบคุมมุมขวาล่าง =================
         const CustomMapControls = L.Control.extend({
             options: { position: 'bottomright' },
             onAdd: function (map) {
                 const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control flex flex-col gap-0.5 mb-2');
-                container.style.border = 'none'; container.style.boxShadow = 'none'; container.style.backgroundColor = 'transparent';
+                container.style.border = 'none'; 
+                container.style.boxShadow = 'none'; 
+                container.style.backgroundColor = 'transparent';
+                
                 container.innerHTML = `
-                    <div class="bg-[#1e293b] border border-slate-600 rounded-md overflow-hidden shadow-lg flex flex-col">
-                        <a href="#" onclick="toggleMapLabels(); return false;" id="btn-toggle-labels" title="ซ่อน/แสดง ป้ายชื่อสถานที่บนแผนที่" class="w-8 h-8 flex items-center justify-center text-emerald-400 hover:text-white hover:bg-slate-700 transition-colors border-b border-slate-600">
+                    <div class="bg-[#1e293b] border border-slate-600 rounded-md overflow-hidden shadow-lg flex flex-col pointer-events-auto">
+                        <a href="#" onclick="window.toggleMapLabels(); return false;" id="btn-toggle-labels" title="ซ่อน/แสดง ป้ายชื่อสถานที่บนแผนที่" class="w-8 h-8 flex items-center justify-center text-emerald-400 hover:text-white hover:bg-slate-700 transition-colors border-b border-slate-600">
                             <i class="fa-solid fa-eye text-[14px]"></i>
                         </a>
-                        <a href="#" onclick="map.locate({setView: true, maxZoom: 16}); return false;" title="ตำแหน่งของฉัน" class="w-8 h-8 flex items-center justify-center text-blue-400 hover:text-white hover:bg-slate-700 transition-colors border-b border-slate-600">
+                        <a href="#" onclick="window.toggleGPSTracking(); return false;" id="btn-track-location" title="ระบุและติดตามตำแหน่งของฉัน (Live Tracking)" class="w-8 h-8 flex items-center justify-center text-blue-400 hover:text-white hover:bg-slate-700 transition-colors border-b border-slate-600">
                             <i class="fa-solid fa-crosshairs text-[15px]"></i>
                         </a>
                         <a href="#" onclick="openGoogleMaps(map.getCenter().lat, map.getCenter().lng); return false;" title="ดูสตรีทวิวตรงเป้าเล็ง" class="w-8 h-8 flex items-center justify-center text-amber-500 hover:text-white hover:bg-slate-700 transition-colors">
@@ -373,6 +471,7 @@
         });
         map.addControl(new CustomMapControls());
 
+        // =================== ฟังก์ชันสลับแผนที่ถนน/ดาวเทียม ===================
         function toggleMapLayer() {
             const thumbImg = document.getElementById('layer-thumb-img');
             
@@ -410,6 +509,7 @@
             "ม.1": 9, "ม.7": 10, "ม.8": 11
         };
 
+        // --- ซูมหาพิกัด ---
         function fitMapToBounds() {
             if (allHouses.length > 0) {
                 const bounds = L.latLngBounds(allHouses.map(h => [h.lat, h.lng]));
@@ -417,6 +517,7 @@
             }
         }
 
+        // --- ดึงข้อมูลพิกัดบ้านจากไฟล์ KML ---
         function loadKMLFile() {
             fetch('houses.kml?t=' + new Date().getTime())
                 .then(res => res.text())
@@ -451,6 +552,7 @@
                     statusEl.innerHTML = `<i class="fa-solid fa-square-check"></i> โหลดพิกัดนำจ่ายสำเร็จ ${allHouses.length} หลัง`;
                 })
                 .catch(err => {
+                    console.error("Error loading KML:", err);
                     const statusEl = document.getElementById("file-status");
                     statusEl.className = "mx-3 mt-3 p-2 rounded text-[13px] font-bold text-center bg-red-950/80 text-red-400 border border-red-500 flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all";
                     statusEl.innerHTML = `❌ เกิดข้อผิดพลาดในการโหลดไฟล์ KML`;
@@ -801,27 +903,23 @@
             const overlay = document.getElementById('mobile-overlay');
             if (sidebar && window.innerWidth < 768) {
                 sidebar.classList.add('-translate-x-full');
-                if (overlay) overlay.classList.add('hidden');
+                if (overlay) overlay.classList.remove('active');
             }
 
-            // ซ่อนองค์ประกอบต่างๆ
             ['main-sidebar', 'resizer', 'village-stats-panel', 'btn-mobile-menu'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('delivery-hidden');
             });
-            
             const exitBtn = document.getElementById('exit-full-mode');
             if (exitBtn) exitBtn.style.setProperty('display', 'flex', 'important');
             setTimeout(() => { if(map) map.invalidateSize(); }, 300);
         }
 
         function exitDeliveryMode() {
-            // แสดงองค์ประกอบกลับมา
             ['main-sidebar', 'resizer', 'village-stats-panel', 'btn-mobile-menu'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.remove('delivery-hidden');
             });
-            
             const exitBtn = document.getElementById('exit-full-mode');
             if (exitBtn) exitBtn.style.setProperty('display', 'none', 'important');
 
