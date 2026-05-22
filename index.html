@@ -1040,10 +1040,165 @@ async function addToQueue(houseId, btnElement = null) {
 
     const house = allHouses.find(h => h.id === houseId);
 
-    if (!house || deliveryQueue.some(q => q.id === houseId)) {
-        if (map) map.closePopup();
-        return;
-    }
+    // =========================
+// เช็คบ้านซ้ำ
+// =========================
+
+// =========================
+// เช็คบ้านซ้ำ
+// =========================
+
+if (!house) {
+
+    if (map) map.closePopup();
+
+    return;
+}
+
+const isDuplicate =
+    deliveryQueue.some(
+        q => q.id === houseId
+    );
+
+if (isDuplicate) {
+
+    // =========================
+    // Premium Duplicate UI
+    // =========================
+
+    const toast =
+        document.createElement('div');
+
+    toast.innerHTML = `
+        <div style="
+            display:flex;
+            align-items:center;
+            gap:14px;
+        ">
+
+            <div style="
+                width:58px;
+                height:58px;
+                border-radius:18px;
+                background:linear-gradient(
+                    135deg,
+                    #ff3b3b,
+                    #ff7a00
+                );
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-size:28px;
+                box-shadow:
+                    0 0 20px rgba(255,80,80,0.6);
+                flex-shrink:0;
+            ">
+                ⚠️
+            </div>
+
+            <div>
+
+                <div style="
+                    font-size:20px;
+                    font-weight:800;
+                    margin-bottom:6px;
+                    color:white;
+                    letter-spacing:0.5px;
+                ">
+                    บ้านซ้ำ
+                </div>
+
+                <div style="
+                    font-size:15px;
+                    color:rgba(255,255,255,0.75);
+                    line-height:1.4;
+                ">
+                    คุณได้เพิ่มบ้านนี้ไปแล้ว
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+    toast.style.position = 'fixed';
+
+    toast.style.top = '50%';
+
+    toast.style.left = '50%';
+
+    toast.style.transform =
+        'translate(-50%, -50%) scale(0.85)';
+
+    toast.style.minWidth =
+        '320px';
+
+    toast.style.maxWidth =
+        '90vw';
+
+    toast.style.padding =
+        '22px';
+
+    toast.style.borderRadius =
+        '28px';
+
+    toast.style.background =
+        'rgba(15,15,20,0.82)';
+
+    toast.style.backdropFilter =
+        'blur(18px)';
+
+    toast.style.webkitBackdropFilter =
+        'blur(18px)';
+
+    toast.style.border =
+        '1px solid rgba(255,255,255,0.08)';
+
+    toast.style.boxShadow = `
+        0 0 0 1px rgba(255,255,255,0.03),
+        0 20px 60px rgba(0,0,0,0.45),
+        0 0 40px rgba(0,255,200,0.08)
+    `;
+
+    toast.style.zIndex =
+        '999999';
+
+    toast.style.opacity = '0';
+
+    toast.style.transition =
+        'all 0.28s cubic-bezier(.2,.9,.2,1)';
+
+    document.body.appendChild(toast);
+
+    // Animate In
+    requestAnimationFrame(() => {
+
+        toast.style.opacity = '1';
+
+        toast.style.transform =
+            'translate(-50%, -50%) scale(1)';
+    });
+
+    // Animate Out
+    setTimeout(() => {
+
+        toast.style.opacity = '0';
+
+        toast.style.transform =
+            'translate(-50%, -50%) scale(0.92)';
+
+        setTimeout(() => {
+
+            toast.remove();
+
+        }, 300);
+
+    }, 2400);
+
+    if (map) map.closePopup();
+
+    return;
+}
 
     // เพิ่มบ้านเข้าคิว
     deliveryQueue.push(house);
