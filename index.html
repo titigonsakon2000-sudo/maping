@@ -147,6 +147,20 @@
             100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
         }
 
+        .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(16, 185, 129, 0.3);
+    border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(16, 185, 129, 0.6);
+}
+
         
     </style>
 </head>
@@ -291,27 +305,62 @@
             </div>
         </div>
 
-        <div id="delivery-status-card" class="absolute bottom-[90px] md:bottom-24 left-1/2 -translate-x-1/2 z-[2001] hidden w-[90%] max-w-[250px]">
-            <div id="delivery-card-inner" class="w-full">
-                <div class="bg-[#090d16]/95 border-2 border-emerald-500/50 rounded-2xl p-3 shadow-[0_0_30px_rgba(16,185,129,0.3)] backdrop-blur-md flex flex-col items-center">
-                    
-                    <span class="text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-location-crosshairs animate-pulse"></i> เป้าหมายปัจจุบัน</span>
-                    
-                    <div id="current-target-info" class="text-white text-center mb-3 w-full bg-black/40 rounded-xl py-2 border border-white/5">
-                        <div class="text-[20px] font-black neon-text-emerald tracking-wide" id="target-house">...</div>
-                        <div class="text-[11px] font-medium text-slate-400 mt-0.5" id="target-village">...</div>
-                    </div>
-                    
-                    <button onclick="completeCurrentDelivery()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.4)] transition-all active:scale-95 flex items-center justify-center gap-2 text-[14px]">
-                        <i class="fa-solid fa-check-circle text-lg"></i> ส่งสำเร็จ
-                    </button>
-                </div>
-            </div>
+        <div class="route-panel-container">
+    <div class="route-panel-header">
+        <span class="icon">📍</span> รายการจุดหมายที่ต้องไป
+    </div>
+    <div class="route-list" id="destinationList">
         </div>
+</div>
+
+        <div id="delivery-status-card" class="absolute bottom-[90px] md:bottom-24 left-1/2 -translate-x-1/2 z-[2001] hidden w-[90%] max-w-[280px]">
+    <div id="delivery-card-inner" class="w-full">
+        <div class="bg-[#090d16]/95 border-2 border-emerald-500/50 rounded-2xl p-3 shadow-[0_0_30px_rgba(16,185,129,0.3)] backdrop-blur-md flex flex-col items-center">
+            
+            <div class="flex justify-between w-full px-1 mb-1">
+                <span class="text-emerald-400 text-[10px] font-bold uppercase tracking-widest">
+                    <i class="fa-solid fa-location-crosshairs animate-pulse"></i> เป้าหมายปัจจุบัน
+                </span>
+                <span id="queue-number" class="text-emerald-500/80 text-[10px] font-mono">0/0</span>
+            </div>
+            
+            <div class="flex items-center w-full gap-2 mb-3">
+                <button onclick="prevQueue()" class="p-2 text-emerald-500 hover:bg-emerald-500/10 rounded-full transition-all active:scale-90">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+
+                <div id="current-target-info" class="flex-1 text-white text-center bg-black/40 rounded-xl py-2 border border-white/5">
+                    <div class="text-[20px] font-black neon-text-emerald tracking-wide" id="target-house">...</div>
+                    <div class="text-[11px] font-medium text-slate-400 mt-0.5" id="target-village">...</div>
+                </div>
+
+                <button onclick="nextQueue()" class="p-2 text-emerald-500 hover:bg-emerald-500/10 rounded-full transition-all active:scale-90">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <button onclick="completeCurrentDelivery()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.4)] transition-all active:scale-95 flex items-center justify-center gap-2 text-[14px]">
+                <i class="fa-solid fa-check-circle text-lg"></i> ส่งสำเร็จ
+            </button>
+        </div>
+    </div>
+</div>
 
         <button id="exit-full-mode" onclick="exitDeliveryMode()" class="hidden absolute bottom-6 left-1/2 -translate-x-1/2 z-[1001] w-[80%] max-w-[250px] md:w-auto bg-red-950/90 border-2 border-red-500 hover:bg-red-600 hover:text-white text-red-400 px-6 md:px-8 py-2.5 rounded-full shadow-[0_0_20px_rgba(239,68,68,0.5)] items-center justify-center gap-2 font-bold tracking-wide text-[13px] transition-all active:scale-95 hover:-translate-y-1 backdrop-blur-md cursor-pointer text-nowrap">
             <i class="fa-solid fa-xmark"></i> ออกจากโหมดเต็มจอ
         </button>
+
+        <div id="queue-list-panel" class="absolute top-4 left-4 z-[2001] w-[260px] max-h-[45vh] bg-[#090d16]/95 border border-emerald-500/30 rounded-2xl p-3 shadow-[0_0_25px_rgba(16,185,129,0.15)] backdrop-blur-md flex flex-col hidden">
+    <div class="flex items-center justify-between border-b border-emerald-500/20 pb-2 mb-2">
+        <span class="text-emerald-400 text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5">
+            <i class="fa-solid fa-list-ol"></i> ลำดับคิวส่งของ
+        </span>
+        <span id="queue-total-count" class="text-slate-400 text-[10px] font-mono bg-black/30 px-2 py-0.5 rounded-md border border-white/5">0 จุด</span>
+    </div>
+    
+    <div id="queue-items-container" class="flex-1 overflow-y-auto space-y-1.5 pr-1 custom-scrollbar">
+        </div>
+</div>
     </main>
 
     <script>
@@ -495,7 +544,18 @@
         let queueLayer = L.layerGroup();
         map.addLayer(markersLayer);             
 
-        let deliveryQueue = []; 
+        let deliveryQueue = []; // เก็บรายการบ้านจาก KML ที่ถูกเพิ่มลงคิว
+let currentQueueIndex = 0;
+
+// ฟังก์ชันโหลดและดึงข้อมูลจาก KML (สมมติว่าใช้ร่วมกับระบบเดิมที่คุณมี)
+function loadKMLToQueue(kmlData) {
+    // โค้ดส่วนนี้ขึ้นอยู่กับว่าคุณใช้ Library อะไรอ่าน KML (เช่น toGeoJSON)
+    // นี่คือตัวอย่างการดึงข้อมูลคร่าวๆ
+    // deliveryQueue = extractedDataFromKML; 
+    
+    currentQueueIndex = 0;
+    updateDeliveryCard();
+}
         let routingControl = null; 
         let searchTimer = null; 
 
@@ -601,34 +661,588 @@
             }
         }
 
-        function addToQueue(houseId, btnElement = null) {
-            const house = allHouses.find(h => h.id === houseId);
-            if (!house || deliveryQueue.some(q => q.id === houseId)) {
-                if(map) map.closePopup(); return;
-            }
-            
-            deliveryQueue.push(house);
-            deliveryQueue.sort((a, b) => {
-                const pA = villagePriority[a.village] || 99;
-                const pB = villagePriority[b.village] || 99;
-                if (pA !== pB) return pA - pB; 
-                return getHouseNumberValue(a.id) - getHouseNumberValue(b.id);
-            });
-            
-            updateQueueUI(true);
-            refreshQueueMap(); 
-            if(map) map.closePopup();
+// ===================== ROAD-DISTANCE ROUTE OPTIMIZER (OSRM) =====================
 
-            if (btnElement) {
-                const row = btnElement.closest('.flex.justify-between.items-center');
-                if (row) {
-                    row.style.transition = "all 0.3s ease-out";
-                    row.style.opacity = '0';
-                    row.style.transform = 'translateX(20px)';
-                    setTimeout(() => { row.style.display = 'none'; }, 300);
+// ดึง distance matrix จาก OSRM จริง (ระยะทางตามถนน)
+async function fetchOSRMDistanceMatrix(houses) {
+    const coords = houses.map(h => `${h.lng},${h.lat}`).join(';');
+    const url = `https://router.project-osrm.org/table/v1/driving/${coords}?annotations=distance`;
+    
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.code === 'Ok') {
+    console.log('OSRM Matrix:', JSON.stringify(data.distances));
+    console.log('Houses order:', houses.map(h => h.id));
+    return data.distances;
+}
+    } catch (e) {
+        console.warn('OSRM matrix failed, fallback to Haversine:', e);
+    }
+    return null;
+}
+
+// Nearest Neighbor ใช้ matrix ที่ได้จาก OSRM
+function buildRouteFromMatrix(matrix, houses) {
+    const n = houses.length;
+
+    function nnRoute(startIdx) {
+        const visited = new Array(n).fill(false);
+        const route = [startIdx];
+        visited[startIdx] = true;
+        let current = startIdx;
+        for (let step = 1; step < n; step++) {
+            let nearestIdx = -1, minDist = Infinity;
+            for (let j = 0; j < n; j++) {
+                if (!visited[j] && matrix[current][j] < minDist) {
+                    minDist = matrix[current][j];
+                    nearestIdx = j;
+                }
+            }
+            visited[nearestIdx] = true;
+            route.push(nearestIdx);
+            current = nearestIdx;
+        }
+        return route;
+    }
+
+    function routeDist(route) {
+        let total = 0;
+        for (let i = 0; i < route.length - 1; i++) {
+            total += matrix[route[i]][route[i + 1]];
+        }
+        return total;
+    }
+
+    // หา route ที่ดีที่สุดจากทุก start
+    // Score = ระยะรวม + penalty ถ้าจุดสุดท้ายอยู่ใกล้จุดแรกมาก (แปลว่าย้อนกลับ)
+    let bestRoute = null, bestScore = Infinity;
+    for (let i = 0; i < n; i++) {
+        const r = nnRoute(i);
+        const dist = routeDist(r);
+        // penalty: ถ้าจุดสุดท้ายใกล้จุดเริ่มมาก = route วนกลับ = ไม่ดี
+        const lastToFirst = matrix[r[n-1]][r[0]];
+        const penalty = lastToFirst < dist * 0.3 ? dist * 0.5 : 0;
+        const score = dist + penalty;
+        if (score < bestScore) {
+            bestScore = score;
+            bestRoute = r;
+        }
+    }
+
+    return bestRoute.map(i => houses[i]);
+}
+
+function buildRouteFromMatrixWithDepot(matrix, houses) {
+    // matrix มี depot ที่ index 0, บ้านอยู่ที่ index 1..n
+    const n = houses.length;
+
+    // หาบ้านที่ใกล้ depot มากที่สุด → เป็นจุดแรก
+    let firstIdx = 0;
+    let minDistFromDepot = Infinity;
+    for (let j = 1; j <= n; j++) {
+        if (matrix[0][j] < minDistFromDepot) {
+            minDistFromDepot = matrix[0][j];
+            firstIdx = j - 1; // index ใน houses array (ลบ 1 เพราะ depot อยู่ที่ 0)
+        }
+    }
+
+    // Nearest Neighbor จากจุดแรกที่ได้
+    // ใช้ submatrix ของบ้านเท่านั้น (index 1..n ใน matrix)
+    const visited = new Array(n).fill(false);
+    const route = [firstIdx];
+    visited[firstIdx] = true;
+    let current = firstIdx;
+
+    for (let step = 1; step < n; step++) {
+        let nearestIdx = -1, minDist = Infinity;
+        for (let j = 0; j < n; j++) {
+            if (!visited[j]) {
+                // matrix index ของบ้านคือ j+1 (เพราะ depot อยู่ที่ 0)
+                const dist = matrix[current + 1][j + 1];
+                if (dist < minDist) {
+                    minDist = dist;
+                    nearestIdx = j;
                 }
             }
         }
+        visited[nearestIdx] = true;
+        route.push(nearestIdx);
+        current = nearestIdx;
+    }
+
+    return route.map(i => houses[i]);
+}
+
+// Haversine fallback (กรณี OSRM ล้ม)
+function calcDistance(a, b) {
+    const R = 6371;
+    const dLat = (b.lat - a.lat) * Math.PI / 180;
+    const dLng = (b.lng - a.lng) * Math.PI / 180;
+    const sinDLat = Math.sin(dLat / 2);
+    const sinDLng = Math.sin(dLng / 2);
+    const aVal = sinDLat * sinDLat +
+        Math.cos(a.lat * Math.PI / 180) * Math.cos(b.lat * Math.PI / 180) *
+        sinDLng * sinDLng;
+    return R * 2 * Math.atan2(Math.sqrt(aVal), Math.sqrt(1 - aVal));
+}
+
+function optimizeRouteNearestNeighbor(houses) {
+    if (houses.length <= 2) return [...houses];
+
+    function buildRoute(startIdx, list) {
+        const unvisited = [...list];
+        const route = [];
+        let current = unvisited.splice(startIdx, 1)[0];
+        route.push(current);
+        while (unvisited.length > 0) {
+            let nearestIdx = 0;
+            let minDist = calcDistance(current, unvisited[0]);
+            for (let i = 1; i < unvisited.length; i++) {
+                const d = calcDistance(current, unvisited[i]);
+                if (d < minDist) { minDist = d; nearestIdx = i; }
+            }
+            current = unvisited.splice(nearestIdx, 1)[0];
+            route.push(current);
+        }
+        return route;
+    }
+
+    function totalDist(route) {
+        let total = 0;
+        for (let i = 0; i < route.length - 1; i++) {
+            total += calcDistance(route[i], route[i + 1]);
+        }
+        return total;
+    }
+
+    let bestRoute = null, bestDist = Infinity;
+    for (let i = 0; i < houses.length; i++) {
+        const route = buildRoute(i, houses);
+        const dist = totalDist(route);
+        if (dist < bestDist) { bestDist = dist; bestRoute = route; }
+    }
+
+    return bestRoute;
+}
+
+function detectRoadBranch(house, junctionLat, junctionLng) {
+
+    const latDiff = house.lat - junctionLat;
+    const lngDiff = house.lng - junctionLng;
+
+    // =========================
+    // แนวถนน
+    // =========================
+
+    // ขึ้น
+    if (
+        Math.abs(latDiff) > Math.abs(lngDiff)
+    ) {
+
+        return latDiff > 0
+            ? 'north'
+            : 'south';
+    }
+
+    // ซ้ายขวา
+    return lngDiff > 0
+        ? 'east'
+        : 'west';
+}
+
+async function optimizeRouteForward(houses) {
+
+    if (houses.length <= 1) return houses;
+
+    // =========================
+    // เริ่มจากจุดล่างสุด
+    // =========================
+    let startIndex = 0;
+
+    for (let i = 1; i < houses.length; i++) {
+
+        if (houses[i].lat < houses[startIndex].lat) {
+            startIndex = i;
+        }
+    }
+
+    const route = [];
+
+    const unvisited = [...houses];
+
+    let current = unvisited.splice(startIndex, 1)[0];
+
+    route.push(current);
+
+    // =========================
+    // ไล่ตามถนนจริง
+    // =========================
+    while (unvisited.length > 0) {
+
+        let bestIndex = -1;
+
+        let bestScore = Infinity;
+
+        for (let i = 0; i < unvisited.length; i++) {
+
+            const next = unvisited[i];
+
+            try {
+
+                // -------------------------
+                // OSRM route
+                // -------------------------
+                const url =
+                    `https://router.project-osrm.org/route/v1/driving/` +
+                    `${current.lng},${current.lat};` +
+                    `${next.lng},${next.lat}` +
+                    `?overview=false`;
+
+                const res = await fetch(url);
+
+                const data = await res.json();
+
+                if (data.code !== 'Ok') continue;
+
+                const roadDistance =
+                    data.routes[0].distance;
+
+                    let intersectionPenalty = 0;
+
+try {
+
+    const steps =
+        data.routes[0].legs[0].steps || [];
+
+    // จำนวนการเลี้ยว
+    let turnCount = 0;
+
+    // จำนวน intersection
+    let intersectionCount = 0;
+
+    for (const step of steps) {
+
+        // --------------------
+        // เช็ค maneuver
+        // --------------------
+        const type =
+            step.maneuver?.type || '';
+
+        const modifier =
+            step.maneuver?.modifier || '';
+
+        // --------------------
+        // ถ้าเป็นการเลี้ยว
+        // --------------------
+        if (
+            modifier.includes('left') ||
+            modifier.includes('right')
+        ) {
+
+            turnCount++;
+        }
+
+        // --------------------
+        // เช็ค intersection
+        // --------------------
+        if (step.intersections) {
+
+            for (const inter of step.intersections) {
+
+                const roads =
+                    inter.bearings?.length || 0;
+
+                // 3 แยกขึ้นไป
+                if (roads >= 3) {
+
+                    intersectionCount++;
+                }
+            }
+        }
+    }
+
+    // --------------------
+    // ค่าปรับ
+    // --------------------
+
+    // เลี้ยวเยอะ = penalty
+    intersectionPenalty +=
+        turnCount * 120;
+
+    // 3แยก 4แยก 5แยก = penalty
+    intersectionPenalty +=
+        intersectionCount * 250;
+
+} catch (e) {
+
+    console.log(
+        'intersection check failed',
+        e
+    );
+}
+
+                // -------------------------
+                // คำนวณทิศทาง
+                // -------------------------
+                const latDiff =
+                    next.lat - current.lat;
+
+                const lngDiff =
+                    next.lng - current.lng;
+
+                // -------------------------
+                // ห้ามย้อนกลับแรง ๆ
+                // -------------------------
+                const backwardPenalty =
+                    (latDiff < -0.0003 || lngDiff < -0.0003)
+                    ? 999999
+                    : 0;
+
+                // -------------------------
+                // score สุดท้าย
+                // -------------------------
+                const score =
+    roadDistance +
+    backwardPenalty +
+    intersectionPenalty;
+
+                if (score < bestScore) {
+
+                    bestScore = score;
+
+                    bestIndex = i;
+                }
+
+            } catch (e) {
+
+                console.log(e);
+            }
+        }
+
+        // fallback
+        if (bestIndex === -1) {
+            bestIndex = 0;
+        }
+
+        current =
+            unvisited.splice(bestIndex, 1)[0];
+
+        route.push(current);
+    }
+
+    return route;
+}
+
+// addToQueue — async ใช้ OSRM จริง
+// addToQueue — FIXED VERSION
+async function addToQueue(houseId, btnElement = null) {
+
+    const house = allHouses.find(h => h.id === houseId);
+
+    if (!house || deliveryQueue.some(q => q.id === houseId)) {
+        if (map) map.closePopup();
+        return;
+    }
+
+    // เพิ่มบ้านเข้าคิว
+    deliveryQueue.push(house);
+
+    // =========================
+    // เรียงใหม่เมื่อมีมากกว่า 1 จุด
+    // =========================
+    if (deliveryQueue.length >= 2) {
+
+        const villageOrder = {
+            "ม.10": 1,
+            "ม.16": 2,
+            "ม.22": 3,
+            "ม.12": 4,
+            "ม.5": 5,
+            "ม.21": 6,
+            "ม.2": 7,
+            "ม.19": 8,
+            "ม.1": 9,
+            "ม.7": 10,
+            "ม.8": 11
+        };
+
+        // =========================
+        // แยกกลุ่มตามหมู่
+        // =========================
+        const grouped = {};
+
+        deliveryQueue.forEach(h => {
+
+            if (!grouped[h.village]) {
+                grouped[h.village] = [];
+            }
+
+            grouped[h.village].push(h);
+        });
+
+        let finalRoute = [];
+
+        // =========================
+        // เรียงตามลำดับหมู่
+        // =========================
+        const sortedVillages =
+            Object.keys(grouped).sort(
+                (a, b) =>
+                    (villageOrder[a] || 999) -
+                    (villageOrder[b] || 999)
+            );
+
+        // =========================
+        // Optimize ภายในแต่ละหมู่
+        // =========================
+        for (const village of sortedVillages) {
+
+            const housesInVillage =
+                grouped[village];
+
+                // =========================
+// แยกสายถนน
+// =========================
+
+const branches = {};
+
+// ใช้จุดแรกเป็น junction ชั่วคราว
+const junctionLat =
+    housesInVillage[0].lat;
+
+const junctionLng =
+    housesInVillage[0].lng;
+
+// =========================
+// เรียงตามบ้านแรกที่เพิ่ม
+// =========================
+
+const startHouse =
+    deliveryQueue[0];
+
+housesInVillage.sort((a, b) => {
+
+    return (
+        calcDistance(startHouse, a) -
+        calcDistance(startHouse, b)
+    );
+});
+housesInVillage.forEach(h => {
+
+    const branch =
+        detectRoadBranch(
+            h,
+            junctionLat,
+            junctionLng
+        );
+
+    if (!branches[branch]) {
+
+        branches[branch] = [];
+    }
+
+    branches[branch].push(h);
+});
+
+            // เรียงตามถนนจริง
+            let villageRoute = [];
+            
+
+// =========================
+// เรียง branch
+// =========================
+
+const branchPriority = [
+    'south',
+    'east',
+    'west',
+    'north'
+];
+
+
+
+branchPriority.forEach(branch => {
+
+    if (!branches[branch]) return;
+
+    // เรียงใน branch
+    const sorted =
+        branches[branch].sort(
+            (a, b) => {
+
+                return (
+                    calcDistance(
+                        housesInVillage[0],
+                        a
+                    ) -
+                    calcDistance(
+                        housesInVillage[0],
+                        b
+                    )
+                );
+            }
+        );
+
+    villageRoute =
+        villageRoute.concat(sorted);
+});
+    villageRoute.sort((a, b) => {
+
+    return b.lat - a.lat;
+});
+
+finalRoute =
+    finalRoute.concat(villageRoute);
+        }
+
+        deliveryQueue = finalRoute;
+    }
+
+    
+
+    // =========================
+    // อัปเดต UI
+    // =========================
+    updateQueueUI(true);
+
+    setTimeout(() => {
+
+    refreshQueueMap();
+
+}, 100);
+
+    if (map) map.closePopup();
+
+    // =========================
+    // ซ่อนแถวที่เพิ่มแล้ว
+    // =========================
+    if (btnElement) {
+
+        const row =
+            btnElement.closest(
+                '.flex.justify-between.items-center'
+            );
+
+        if (row) {
+
+            row.style.transition =
+                "all 0.3s ease-out";
+
+            row.style.opacity = '0';
+
+            row.style.transform =
+                'translateX(20px)';
+
+            setTimeout(() => {
+
+                row.style.display = 'none';
+
+            }, 300);
+        }
+    }
+}
+
 
         function removeFromQueue(houseId) {
             deliveryQueue = deliveryQueue.filter(h => h.id !== houseId);
@@ -646,22 +1260,11 @@
         }
 
         function reverseQueueDirection() {
-            if (deliveryQueue.length <= 1) return;
-            const groups = {};
-            deliveryQueue.forEach(h => {
-                if (!groups[h.village]) groups[h.village] = [];
-                groups[h.village].push(h);
-            });
-            let newReversedQueue = [];
-            const sortedVillages = Object.keys(groups).sort((a, b) => (villagePriority[a] || 99) - (villagePriority[b] || 99));
-            sortedVillages.forEach(v => {
-                groups[v].reverse();
-                newReversedQueue = newReversedQueue.concat(groups[v]);
-            });
-            deliveryQueue = newReversedQueue;
-            updateQueueUI(true);
-            refreshQueueMap();
-        }
+    if (deliveryQueue.length <= 1) return;
+    deliveryQueue.reverse();
+    updateQueueUI(true);
+    refreshQueueMap();
+}
 
         function getHouseNumberValue(id) {
             let houseNumberPart = id.split(/ม\./i)[0].trim();
@@ -759,21 +1362,75 @@
             });
         }
 
-        function drawPath() {
-            if (window.routingControl) {
-                map.removeControl(window.routingControl);
-                window.routingControl = null;
-            }
-            if (deliveryQueue.length > 1) {
-                window.routingControl = L.Routing.control({
-                    waypoints: deliveryQueue.map(h => L.latLng(h.lat, h.lng)),
-                    routeWhileDragging: false, addWaypoints: false, draggableWaypoints: false,
-                    fitSelectedRoutes: true, show: false, 
-                    lineOptions: { styles: [{ color: '#005533', weight: 12, opacity: 0.4 }, { color: '#00ff99', weight: 5, opacity: 0.9 }] },
-                    router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1', profile: 'driving' })
+        async function drawPath() {
+    if (window.routingControl) {
+        map.removeControl(window.routingControl);
+        window.routingControl = null;
+    }
+    if (window.straightLines) {
+        window.straightLines.forEach(l => map.removeLayer(l));
+        window.straightLines = [];
+    }
+
+    if (deliveryQueue.length < 2) return;
+
+    window.straightLines = [];
+
+    // รอทีละ segment ตามลำดับ (await ทีละอัน)
+    for (let i = 0; i < deliveryQueue.length - 1; i++) {
+        const from = deliveryQueue[i];
+        const to = deliveryQueue[i + 1];
+        const dist = calcDistance(from, to);
+        await checkAndDrawSegment(from, to, dist);
+    }
+}
+
+async function checkAndDrawSegment(from, to, straightDist) {
+    const url = `https://router.project-osrm.org/route/v1/driving/${from.lng},${from.lat};${to.lng},${to.lat}?overview=full&geometries=geojson`;
+
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (data.code === 'Ok') {
+            const roadDist = data.routes[0].distance / 1000; // km
+            const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+
+            // ถ้าอ้อมเกิน 3.5 เท่าของเส้นตรง = เส้นประ
+            // ถ้าถนนอ้อมเกินเส้นตรงมากกว่า 800 เมตร = เส้นประ
+const detour = (roadDist - straightDist) * 1000; // แปลงเป็นเมตร
+console.log(`${from.id} → ${to.id} | เส้นตรง: ${(straightDist*1000).toFixed(0)}m | ถนนจริง: ${(roadDist*1000).toFixed(0)}m | อ้อม: ${detour.toFixed(0)}m`);
+const isDashed = detour > 2000;
+console.log(`isDashed: ${isDashed}, detour: ${detour.toFixed(0)}m → วาด${isDashed ? 'เส้นประ' : 'เส้นทึบ'}`);
+
+            if (isDashed) {
+                // เส้นตัดปะ — วาดเส้นตรงระหว่าง 2 จุด
+                const dashed = L.polyline([[from.lat, from.lng], [to.lat, to.lng]], {
+                    color: '#00ff99',
+                    weight: 3,
+                    opacity: 0.8,
+                    dashArray: '10, 10'
                 }).addTo(map);
+                window.straightLines.push(dashed);
+            } else {
+                // เส้นทึบ — วาดตามถนนจริง
+                const solid = L.polyline(coords, {
+                    color: '#005533', weight: 12, opacity: 0.4
+                }).addTo(map);
+                const solid2 = L.polyline(coords, {
+                    color: '#00ff99', weight: 5, opacity: 0.9
+                }).addTo(map);
+                window.straightLines.push(solid, solid2);
             }
         }
+    } catch (e) {
+        // fallback เส้นประ
+        const dashed = L.polyline([[from.lat, from.lng], [to.lat, to.lng]], {
+            color: '#00ff99', weight: 3, opacity: 0.8, dashArray: '10, 10'
+        }).addTo(map);
+        window.straightLines.push(dashed);
+    }
+}
 
         function filterByVillage() {
             const selectedVillage = document.getElementById("village-filter").value;
@@ -951,6 +1608,24 @@
             setTimeout(() => { if(map) map.invalidateSize(); }, 300);
         }
 
+        // 1. ค้นหาฟังก์ชันที่ใช้โหลดไฟล์ KML (ชื่ออาจเป็น handleFileSelect หรือ handleKML)
+function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const kmlText = e.target.result;
+            
+            // ... (โค้ดเดิมของคุณที่ใช้ดึงข้อมูลจาก KML ใส่ deliveryQueue) ...
+            
+            // เมื่อโหลดเสร็จแล้ว ให้เพิ่ม 2 บรรทัดนี้ไว้ท้ายสุดของ reader.onload
+            currentQueueIndex = 0;      // บังคับให้เริ่มที่จุดที่ 1
+            renderTopLeftQueue();       // สั่งให้แสดงรายชื่อที่มุมบนซ้ายทันที
+        };
+        reader.readAsText(file);
+    }
+}
+
         function exitDeliveryMode() {
             ['main-sidebar', 'resizer', 'village-stats-panel', 'btn-mobile-menu', 'layer-toggle-btn'].forEach(id => {
                 const el = document.getElementById(id);
@@ -967,29 +1642,63 @@
         }
 
         // ================= อัปเดตข้อมูลเป้าหมายบนแผง =================
-        function updateDeliveryCard() {
-            if (deliveryQueue.length > 0) {
-                const current = deliveryQueue[0]; 
-                
-                // โชว์ชื่อบ้านตัวเบ้อเร่อ
-                document.getElementById('target-house').innerText = current.id; 
-                // โชว์ลำดับคิว
-                document.getElementById('target-village').innerText = `ลำดับที่ 1 จาก ${deliveryQueue.length} คิวที่เหลือ`;
-                
-                // สั่งให้กล้องแผนที่ซูมบินไปหาเป้าหมาย
-                map.flyTo([current.lat, current.lng], 18, { animate: true, duration: 1.5 });
-            } else {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'ภารกิจเสร็จสิ้น!',
-                    text: 'เยี่ยมมากครับ คุณจัดส่งพัสดุครบทุกคิวแล้ว 🎉',
-                    background: '#0f172a', color: '#fff',
-                    confirmButtonColor: '#00ff99'
-                }).then(() => {
-                    exitDeliveryMode();
-                });
-            }
-        }
+        // ฟังก์ชันอัปเดตหน้าจอ Card
+function updateDeliveryCard() {
+    const card = document.getElementById('delivery-status-card');
+    
+    // ถ้าไม่มีข้อมูลในคิว ให้ซ่อน Card
+    if (!deliveryQueue || deliveryQueue.length === 0) {
+        card.classList.add('hidden');
+        return;
+    }
+
+    card.classList.remove('hidden');
+    
+    // ดึงข้อมูลลำดับปัจจุบันมาโชว์
+    const target = deliveryQueue[currentQueueIndex];
+    
+    // --- จุดที่แก้ไข: การดึงชื่อและเลขที่บ้าน ---
+    // ลองดึงจาก id หรือ name หรือ featureName (ตามมาตรฐาน KML)
+    const houseNo = target.id || target.name || target.featureName || "ไม่พบเลขที่";
+    const village = target.village || target.description || "ไม่พบหมู่บ้าน";
+
+    // อัปเดตข้อมูลลง UI
+    document.getElementById('target-house').innerText = houseNo;
+    document.getElementById('target-village').innerText = village;
+    
+    // อัปเดตตัวเลขคิว (เช่น 1/11)
+    const queueNum = document.getElementById('queue-number');
+    if (queueNum) {
+        queueNum.innerText = `${currentQueueIndex + 1}/${deliveryQueue.length}`;
+    }
+
+    // สั่งแผนที่ให้เคลื่อนไป (ใช้ชื่อตัวแปรแผนที่ตามใน index.html ของคุณ)
+    if (map && target.lat && target.lng) {
+        map.flyTo([target.lat, target.lng], 18, {
+            animate: true,
+            duration: 1.5
+        });
+    }
+}
+
+// ฟังก์ชันเลื่อนไปอันถัดไป
+function nextQueue() {
+    if (currentQueueIndex < deliveryQueue.length - 1) {
+        currentQueueIndex++;
+        updateDeliveryCard();
+    }
+}
+
+// ฟังก์ชันเลื่อนกลับไปอันก่อนหน้า
+function prevQueue() {
+    if (currentQueueIndex > 0) {
+        currentQueueIndex--;
+        updateDeliveryCard();
+    }
+}
+
+// เมื่อกดส่งสำเร็จ
+// ================= เมื่อกดปุ่ม "จัดส่งสำเร็จแล้ว" =================
 
                 // ================= ระบบปรับขนาด Card (Size Control) =================
         let currentCardScale = 1.0;
@@ -1011,33 +1720,102 @@
         }
 
         // ================= เมื่อกดปุ่ม "จัดส่งสำเร็จแล้ว" =================
-        function completeCurrentDelivery() {
-            if (deliveryQueue.length > 0) {
-                // เอาคิวที่เพิ่งส่งเสร็จออกไป
-                const completedHouse = deliveryQueue.shift();
-                
-                // โชว์แจ้งเตือนเด้งมุมจอว่าสำเร็จ
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    icon: 'success',
-                    title: `ส่งสำเร็จ: ${completedHouse.id}`,
-                    showConfirmButton: false,
-                    timer: 1500,
-                    background: '#042f22',
-                    color: '#00ff99'
-                });
+        // ค้นหาฟังก์ชัน completeCurrentDelivery เดิมแล้วแทนที่ด้วยอันนี้
+function completeCurrentDelivery() {
+    if (deliveryQueue.length > 0 && currentQueueIndex < deliveryQueue.length) {
+        
+        // 1. Mark ว่าส่งแล้ว (เลข Index เดิมจะไม่หายไปไหน)
+        deliveryQueue[currentQueueIndex].isCompleted = true;
 
-                updateQueueUI(true); // รีเฟรชรายการที่เมนู
-                refreshQueueMap();   // ลากเส้นและเรียงเลขในแผนที่ใหม่
-                
-                updateDeliveryCard(); // โหลดเป้าหมายถัดไป
-                
-                if (navigator.vibrate) navigator.vibrate(100);
+        // 2. แจ้งเตือน
+        Swal.fire({
+            toast: true, position: 'top-end', icon: 'success',
+            title: `ส่งสำเร็จ: จุดที่ ${currentQueueIndex + 1}`,
+            showConfirmButton: false, timer: 1500, background: '#042f22', color: '#00ff99'
+        });
+
+        // 3. หาจุดถัดไปที่ยังไม่สำเร็จ
+        let nextIdx = -1;
+        for (let i = currentQueueIndex + 1; i < deliveryQueue.length; i++) {
+            if (!deliveryQueue[i].isCompleted) { nextIdx = i; break; }
+        }
+
+        if (nextIdx !== -1) {
+            currentQueueIndex = nextIdx;
+            updateDeliveryCard(); // แผนที่บินไปจุดถัดไป
+        } else {
+            // ถ้าไม่เจอข้างหน้า ลองหาจุดแรกๆ ที่อาจจะข้ามมา
+            let backIdx = deliveryQueue.findIndex(item => !item.isCompleted);
+            if (backIdx !== -1) {
+                currentQueueIndex = backIdx;
+                updateDeliveryCard();
+            } else {
+                document.getElementById('delivery-status-card').classList.add('hidden');
+                Swal.fire('สำเร็จ!', 'ส่งครบทุกจุดแล้ว', 'success');
             }
         }
 
+        // 4. อัปเดตรายการบนซ้ายให้จุดที่ส่งแล้วหายไป
+        renderTopLeftQueue();
         
+        if (navigator.vibrate) navigator.vibrate(100);
+    }
+}
+
+        // ================= ฟังก์ชันแสดงผลคิวส่งของมุมบนซ้าย =================
+function renderTopLeftQueue() {
+    const panel = document.getElementById('queue-list-panel');
+    const container = document.getElementById('queue-items-container');
+    const totalCount = document.getElementById('queue-total-count');
+    
+    // ถ้าไม่มีข้อมูลในคิวเลย ให้ซ่อนแผงนี้ไป
+    if (!deliveryQueue || deliveryQueue.length === 0) {
+        panel.classList.add('hidden');
+        return;
+    }
+    
+    panel.classList.remove('hidden');
+    
+    // นับจำนวนจุดที่ยังไม่ได้ส่งสำเร็จ
+    const remaining = deliveryQueue.filter(item => !item.isCompleted).length;
+    totalCount.innerText = `เหลือ ${remaining} จุด`;
+    
+    // วนลูปสร้าง UI รายชื่อบ้าน
+    container.innerHTML = deliveryQueue.map((item, index) => {
+        // เงื่อนไขสำคัญ: ถ้าส่งสำเร็จแล้ว ให้หายไปเลย (คืนค่าว่าง) โดยไม่ต้องจัดลำดับ index ใหม่
+        if (item.isCompleted) return '';
+        
+        // เช็คว่าใช่จุดที่กำลังจะไปส่งปัจจุบันไหม
+        const isActive = (index === currentQueueIndex);
+        
+        return `
+            <div onclick="jumpToQueueIndex(${index})" class="flex items-center justify-between p-2 rounded-xl cursor-pointer transition-all border ${
+                isActive 
+                ? 'bg-emerald-500/10 border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.2)]' 
+                : 'bg-black/30 border-white/5 hover:border-emerald-500/40 hover:bg-black/50'
+            }">
+                <div class="flex flex-col min-w-0 pr-2">
+                    <span class="text-[12px] font-bold ${isActive ? 'text-emerald-400' : 'text-slate-200'}">
+                        จุดที่ ${index + 1}: ${item.id || item.name || 'ไม่ทราบเลขที่'}
+                    </span>
+                    <span class="text-[10px] text-slate-400 truncate">
+                        ${item.village || item.description || ''}
+                    </span>
+                </div>
+                ${isActive ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0 shadow-[0_0_8px_#10b981]"></span>' : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+// ฟังก์ชันสำหรับกดที่รายชื่อเพื่อกระโดดข้ามไปดูจุดนั้นบนแผนที่ได้ทันที
+function jumpToQueueIndex(index) {
+    if (index >= 0 && index < deliveryQueue.length && !deliveryQueue[index].isCompleted) {
+        currentQueueIndex = index;
+        updateDeliveryCard(); // อัปเดตการ์ดล่างและบินแผนที่ไป
+        renderTopLeftQueue();  // รีเฟรชไฮไลท์สีเขียวบนรายการ
+    }
+}
 
         loadKMLFile();
 
